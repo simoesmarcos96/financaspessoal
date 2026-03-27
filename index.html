@@ -3,91 +3,358 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestão Financeira</title>
+<title>Gestão Financeira Pro</title>
 
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 20px;
 }
 
 .container {
   background: #1e293b;
-  padding: 20px;
-  border-radius: 12px;
-  width: 400px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  border-radius: 20px;
+  width: 500px;
+  max-width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+  animation: slideIn 0.5s ease-out;
 }
 
-h1 {
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  padding: 30px 20px;
   text-align: center;
+}
+
+.header h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.date {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.balance-section {
+  padding: 30px 20px;
+  background: #0f172a;
+  text-align: center;
+  border-bottom: 1px solid #334155;
+}
+
+.balance-section h3 {
+  color: #94a3b8;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
 }
 
 .balance {
+  font-size: 48px;
+  font-weight: bold;
+  color: #22c55e;
+  margin: 10px 0;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  flex: 1;
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 12px;
   text-align: center;
-  margin: 20px 0;
 }
 
-.balance h2 {
-  margin: 0;
+.stat-card h4 {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 8px;
 }
 
-form {
+.stat-card .income {
+  color: #22c55e;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.stat-card .expense {
+  color: #ef4444;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.form-section {
+  padding: 20px;
+  background: #1e293b;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #fff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+input::placeholder {
+  color: #64748b;
+}
+
+button {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(34, 197, 94, 0.3);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.type-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.type-btn {
+  flex: 1;
+  padding: 10px;
+  background: #0f172a;
+  border: 2px solid #334155;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.type-btn.active {
+  border-color: #22c55e;
+  background: #22c55e;
+  color: white;
+}
+
+.type-btn.income.active {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.type-btn.expense.active {
+  background: #ef4444;
+  border-color: #ef4444;
+}
+
+.list-section {
+  padding: 20px;
+  background: #0f172a;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.list-section h3 {
+  margin-bottom: 15px;
+  color: #94a3b8;
+  font-size: 16px;
+}
+
+.transaction-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-input, select, button {
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-}
-
-button {
-  background: #22c55e;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #16a34a;
-}
-
-.list {
-  margin-top: 20px;
-}
-
-.item {
+.transaction-item {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 12px;
   display: flex;
   justify-content: space-between;
-  background: #334155;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 8px;
+  align-items: center;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.3s ease-out;
 }
 
-.item span {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.transaction-item:hover {
+  transform: translateX(5px);
+  background: #334155;
+}
+
+.transaction-info {
   flex: 1;
 }
 
-.income {
+.transaction-desc {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.transaction-date {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.transaction-amount {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 15px;
+}
+
+.transaction-amount.income {
   color: #22c55e;
 }
 
-.expense {
+.transaction-amount.expense {
   color: #ef4444;
 }
 
 .delete-btn {
-  background: transparent;
-  color: #fff;
+  background: #ef4444;
+  color: white;
   border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #64748b;
+}
+
+.empty-state p {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-btn {
+  flex: 1;
+  padding: 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn.active {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.action-btn {
+  flex: 1;
+  background: #334155;
+  font-size: 12px;
+  padding: 8px;
+}
+
+.action-btn:hover {
+  background: #475569;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #22c55e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #16a34a;
 }
 </style>
 </head>
@@ -95,68 +362,175 @@ button:hover {
 <body>
 
 <div class="container">
-  <h1>💰 Finanças</h1>
-
-  <div class="balance">
-    <h3>Saldo</h3>
-    <h2 id="balance">R$ 0.00</h2>
+  <div class="header">
+    <h1>💰 Finanças Pro</h1>
+    <div class="date" id="currentDate"></div>
   </div>
 
-  <form id="form">
-    <input type="text" id="desc" placeholder="Descrição" required>
-    <input type="number" id="amount" placeholder="Valor" required>
+  <div class="balance-section">
+    <h3>SALDO TOTAL</h3>
+    <div class="balance" id="balance">R$ 0.00</div>
+    <div class="stats">
+      <div class="stat-card">
+        <h4>RECEITAS</h4>
+        <div class="income" id="totalIncome">R$ 0.00</div>
+      </div>
+      <div class="stat-card">
+        <h4>DESPESAS</h4>
+        <div class="expense" id="totalExpense">R$ 0.00</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="type-buttons">
+      <div class="type-btn income active" data-type="income">➕ Receita</div>
+      <div class="type-btn expense" data-type="expense">➖ Despesa</div>
+    </div>
     
-    <select id="type">
-      <option value="income">Receita</option>
-      <option value="expense">Despesa</option>
-    </select>
+    <form id="form">
+      <div class="form-group">
+        <input type="text" id="desc" placeholder="Descrição da transação" required>
+      </div>
+      <div class="form-group">
+        <input type="number" id="amount" placeholder="Valor" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <input type="date" id="date" required>
+      </div>
+      <button type="submit">Adicionar Transação</button>
+    </form>
+  </div>
 
-    <button type="submit">Adicionar</button>
-  </form>
-
-  <div class="list" id="list"></div>
+  <div class="list-section">
+    <h3>📋 HISTÓRICO</h3>
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">Todas</button>
+      <button class="filter-btn" data-filter="income">Receitas</button>
+      <button class="filter-btn" data-filter="expense">Despesas</button>
+    </div>
+    <div class="transaction-list" id="transactionList"></div>
+    <div class="action-buttons">
+      <button class="action-btn" id="exportBtn">📥 Exportar Dados</button>
+      <button class="action-btn" id="clearAllBtn">🗑️ Limpar Tudo</button>
+    </div>
+  </div>
 </div>
 
 <script>
 let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+let currentFilter = "all";
+let currentType = "income";
 
 const balanceEl = document.getElementById("balance");
-const listEl = document.getElementById("list");
+const totalIncomeEl = document.getElementById("totalIncome");
+const totalExpenseEl = document.getElementById("totalExpense");
+const transactionListEl = document.getElementById("transactionList");
 const form = document.getElementById("form");
 
 function saveData() {
   localStorage.setItem("transactions", JSON.stringify(transactions));
 }
 
-function updateUI() {
-  listEl.innerHTML = "";
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('pt-BR');
+}
 
+function calculateStats() {
   let total = 0;
+  let totalIncome = 0;
+  let totalExpense = 0;
 
-  transactions.forEach((t, index) => {
-    total += t.type === "income" ? t.amount : -t.amount;
-
-    const div = document.createElement("div");
-    div.classList.add("item");
-
-    div.innerHTML = `
-      <span>${t.desc}</span>
-      <span class="${t.type}">
-        ${t.type === "income" ? "+" : "-"} R$ ${t.amount.toFixed(2)}
-      </span>
-      <button class="delete-btn" onclick="removeTransaction(${index})">❌</button>
-    `;
-
-    listEl.appendChild(div);
+  transactions.forEach(t => {
+    if (t.type === "income") {
+      total += t.amount;
+      totalIncome += t.amount;
+    } else {
+      total -= t.amount;
+      totalExpense += t.amount;
+    }
   });
 
-  balanceEl.textContent = "R$ " + total.toFixed(2);
+  balanceEl.textContent = `R$ ${total.toFixed(2)}`;
+  totalIncomeEl.textContent = `R$ ${totalIncome.toFixed(2)}`;
+  totalExpenseEl.textContent = `R$ ${totalExpense.toFixed(2)}`;
+
+  return { total, totalIncome, totalExpense };
+}
+
+function updateUI() {
+  let filteredTransactions = transactions;
+  
+  if (currentFilter !== "all") {
+    filteredTransactions = transactions.filter(t => t.type === currentFilter);
+  }
+
+  if (filteredTransactions.length === 0) {
+    transactionListEl.innerHTML = `
+      <div class="empty-state">
+        <p>😊 Nenhuma transação encontrada</p>
+        <p>Adicione sua primeira transação acima!</p>
+      </div>
+    `;
+    calculateStats();
+    return;
+  }
+
+  transactionListEl.innerHTML = filteredTransactions.map((t, index) => {
+    const originalIndex = transactions.findIndex(trans => trans.id === t.id);
+    return `
+      <div class="transaction-item">
+        <div class="transaction-info">
+          <div class="transaction-desc">${escapeHtml(t.desc)}</div>
+          <div class="transaction-date">${formatDate(t.date)}</div>
+        </div>
+        <div class="transaction-amount ${t.type}">
+          ${t.type === "income" ? "+" : "-"} R$ ${t.amount.toFixed(2)}
+        </div>
+        <button class="delete-btn" onclick="removeTransaction(${originalIndex})">🗑️</button>
+      </div>
+    `;
+  }).join("");
+
+  calculateStats();
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
 function removeTransaction(index) {
-  transactions.splice(index, 1);
+  if (confirm("Tem certeza que deseja remover esta transação?")) {
+    transactions.splice(index, 1);
+    saveData();
+    updateUI();
+  }
+}
+
+function addTransaction(desc, amount, type, date) {
+  if (!desc || !amount || amount <= 0 || !date) {
+    alert("Por favor, preencha todos os campos corretamente!");
+    return false;
+  }
+
+  const transaction = {
+    id: Date.now(),
+    desc: desc,
+    amount: amount,
+    type: type,
+    date: date,
+    timestamp: new Date().getTime()
+  };
+
+  transactions.push(transaction);
+  transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
   saveData();
   updateUI();
+  return true;
 }
 
 form.addEventListener("submit", (e) => {
@@ -164,16 +538,85 @@ form.addEventListener("submit", (e) => {
 
   const desc = document.getElementById("desc").value;
   const amount = parseFloat(document.getElementById("amount").value);
-  const type = document.getElementById("type").value;
+  const date = document.getElementById("date").value;
 
-  transactions.push({ desc, amount, type });
-
-  saveData();
-  updateUI();
-
-  form.reset();
+  if (addTransaction(desc, amount, currentType, date)) {
+    form.reset();
+    document.getElementById("date").valueAsDate = new Date();
+  }
 });
 
+// Type buttons
+document.querySelectorAll(".type-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".type-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentType = btn.dataset.type;
+  });
+});
+
+// Filter buttons
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.filter;
+    updateUI();
+  });
+});
+
+// Export data
+document.getElementById("exportBtn").addEventListener("click", () => {
+  const data = {
+    transactions: transactions,
+    exportDate: new Date().toISOString(),
+    totalStats: {
+      total: calculateStats().total,
+      totalIncome: calculateStats().totalIncome,
+      totalExpense: calculateStats().totalExpense
+    }
+  };
+
+  const dataStr = JSON.stringify(data, null, 2);
+  const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+  
+  const exportFileDefaultName = `financas_export_${new Date().toISOString().split('T')[0]}.json`;
+  
+  const linkElement = document.createElement('a');
+  linkElement.setAttribute('href', dataUri);
+  linkElement.setAttribute('download', exportFileDefaultName);
+  linkElement.click();
+  
+  alert("Dados exportados com sucesso!");
+});
+
+// Clear all data
+document.getElementById("clearAllBtn").addEventListener("click", () => {
+  if (confirm("⚠️ ATENÇÃO: Isso irá apagar TODAS as transações. Tem certeza?")) {
+    transactions = [];
+    saveData();
+    updateUI();
+    alert("Todos os dados foram removidos!");
+  }
+});
+
+// Set current date
+function setCurrentDate() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById("date").value = today;
+  
+  const dateElement = document.getElementById("currentDate");
+  const currentDate = new Date();
+  dateElement.textContent = currentDate.toLocaleDateString('pt-BR', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+}
+
+// Initialize
+setCurrentDate();
 updateUI();
 </script>
 
