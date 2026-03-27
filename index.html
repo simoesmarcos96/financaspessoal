@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestão Financeira</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+h1 {
+  text-align: center;
+}
+
+.balance {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.balance h2 {
+  margin: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, select, button {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  background: #22c55e;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #16a34a;
+}
+
+.list {
+  margin-top: 20px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  background: #334155;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+}
+
+.item span {
+  flex: 1;
+}
+
+.income {
+  color: #22c55e;
+}
+
+.expense {
+  color: #ef4444;
+}
+
+.delete-btn {
+  background: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>💰 Finanças</h1>
+
+  <div class="balance">
+    <h3>Saldo</h3>
+    <h2 id="balance">R$ 0.00</h2>
+  </div>
+
+  <form id="form">
+    <input type="text" id="desc" placeholder="Descrição" required>
+    <input type="number" id="amount" placeholder="Valor" required>
+    
+    <select id="type">
+      <option value="income">Receita</option>
+      <option value="expense">Despesa</option>
+    </select>
+
+    <button type="submit">Adicionar</button>
+  </form>
+
+  <div class="list" id="list"></div>
+</div>
+
+<script>
+let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+const balanceEl = document.getElementById("balance");
+const listEl = document.getElementById("list");
+const form = document.getElementById("form");
+
+function saveData() {
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+}
+
+function updateUI() {
+  listEl.innerHTML = "";
+
+  let total = 0;
+
+  transactions.forEach((t, index) => {
+    total += t.type === "income" ? t.amount : -t.amount;
+
+    const div = document.createElement("div");
+    div.classList.add("item");
+
+    div.innerHTML = `
+      <span>${t.desc}</span>
+      <span class="${t.type}">
+        ${t.type === "income" ? "+" : "-"} R$ ${t.amount.toFixed(2)}
+      </span>
+      <button class="delete-btn" onclick="removeTransaction(${index})">❌</button>
+    `;
+
+    listEl.appendChild(div);
+  });
+
+  balanceEl.textContent = "R$ " + total.toFixed(2);
+}
+
+function removeTransaction(index) {
+  transactions.splice(index, 1);
+  saveData();
+  updateUI();
+}
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const desc = document.getElementById("desc").value;
+  const amount = parseFloat(document.getElementById("amount").value);
+  const type = document.getElementById("type").value;
+
+  transactions.push({ desc, amount, type });
+
+  saveData();
+  updateUI();
+
+  form.reset();
+});
+
+updateUI();
+</script>
+
+</body>
+</html>
